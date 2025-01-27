@@ -1,0 +1,135 @@
+{% extends 'blog/master.html' %}
+{% load static %}
+
+    {% block title %}
+     profile
+
+    {% endblock %}
+
+    {% block content %}
+    <link rel="stylesheet" href="{% static 'blog/css/profile.css' %}"/>
+        {% if user_can_view %}
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h2 class="text-capitalize text-muted text-center">{{ target_user.username}}'s profile</h2>
+                        <div class="card" style="width: 300px; font-weight: bold; font-size: 14px;">
+                            <div class="card-body sm-2">
+                                <img src="{{ target_user.profile_picture.url }}" alt="User Icon" class="images">
+                            </div>
+                            <div class="card-footer">
+                                <ul class="profile_foot">
+                                    <p class="text-gray-800 text-capitalize text-center text-muted " style="padding: 5px;border: 1px solid gray; border-radius: 5px;" >
+                                        Full Name: {{ target_user.first_name }} {{ target_user.last_name }}
+                                    </p>
+                                    <p class="text-gray-800 text-capitalize text-center text-muted" style="padding: 2px;border: 1px solid gray; border-radius: 5px;">
+                                        Username: {{ target_user.username }}
+                                    </p>
+                                    {% if target_user.settings.show_email %}
+                                        {% if email and email != 'No Email'%}
+                                            <p class="text-gray-800 text-capitalize text-center text-muted " style="padding: 2px;border: 1px solid gray; border-radius: 5px;">
+                                                Email: {{ email }}
+                                            </p>
+                                        {% endif %}
+                                    {% endif %}
+                                    <p class="text-gray-800 text-capitalize text-center text-muted " style="padding: 2px;border: 1px solid gray; border-radius: 5px;">
+                                        Occupation: {{ target_user.job}}
+                                    </p>
+                                    <p class="text-gray-800 text-capitalize text-center text-muted " style="padding: 2px; border: 1px solid gray; border-radius: 5px;;">
+                                        Address: {{ target_user.location}}
+                                    </p>
+                                    <p class="text-gray-800 text-capitalize text-center text-muted " style="padding: 2px; border: 1px solid gray; border-radius: 5px;">
+                                        Bio: {{ target_user.bio }}
+                                    </p>
+                                    <p class="text-gray-800 text-capitalize text-center text-muted" style="padding: 2px;border: 1px solid gray; border-radius: 5px;">
+                                        Role: {{ target_user.role}}
+                                    </p>
+                                </ul>
+                                {% if target_user == request.user %}
+                                    <button class="btn btn-md btn-primary form-control"  onclick="view_only()"><b>Edit profile</b></button>
+                                {% elif request.user.is_admin %}
+                                    <form method="post" action="{% url 'view_profile' target_user.pk %}">
+                                      {% csrf_token %}
+                                      {% if target_user.is_active %}
+                                        <input class="btn btn-md btn-danger form-control" type="submit" value="Deactivate Profile">
+                                      {% else %}
+                                        <input class="btn btn-md btn-primary form-control" type="submit" value="activate Profile">
+                                      {% endif %}
+                                    </form>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                </div>
+                <div class="col-sm-8">
+                    {% for post in posts %}
+                        <div class="card shadow bg-light">
+                            <a href="{% url 'article' post.slug %}">
+                                <div class="card-header">
+                                        <img class="pic" src="{{ post.author.profile_picture.url }}">
+                                    <div class="post_author">
+                                    </div>
+                                        <p class="text-gray-800 h5 font-weight-bold text-capitalize text-muted">{{ post.author.first_name }} {{ post.author.last_name }}</p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-gray-800 h6 text-capitalize text-muted">Title: {{ post.title }}</div>
+                                    <img class="body_pic" src="{{ post.featured_image.url }}">
+                                    <form method="post" action="{% url 'like_post' post.id %}" class="like flex justify-content-between " style="margin:2px; padding:2px;" >
+                                        {% csrf_token %}
+                                        {% if user in post.likes.all %}
+                                            <button type="submit" name="post_id" value="{{post.id}}" class=" col btn btn-sm bg-danger text-light ">
+                                                <i class="fas fa-thumbs-down"></i><b> Dislike</b>
+                                            </button>
+                                            <small class="col text-muted text-gray-800"style="padding:2px;">
+                                                <strong>{{ post.likes.count }}-Likes</strong>
+                                            </small>
+                                        {% else %}
+                                            <button type="submit" name="post_id" value="{{post.id}}" class=" col btn btn-sm bg-primary text-light">
+                                                <i class="fas fa-thumbs-up"></i><b>like</b>
+                                            </button>
+                                            <small class="col text-muted text-gray-800"style="padding:2px;">
+                                                <strong>{{ post.likes.count }}-Likes</strong>
+                                            </small>
+                                        {% endif %}
+                                    </form>
+                                    <small class="text-dark align-content-center" style="padding: 3px;">{{ post.excerpt }}</small>
+                                </div>
+                                <div class="row card-footer">
+                                    <small class="col text-muted text-gray-800"style="padding:2px;">
+                                        Category : {{ post.category }}
+                                    </small>
+                                    <small class="col text-muted text-gray-800" style="padding:2px;">
+                                        <strong>Status:{{ post.status }}</strong>
+                                    </small>
+                                    <small class="col text-muted text-gray-800" style="padding:2px;">
+                                        Published_on: {{ post.dop }}
+                                    </small>
+                                </div>
+                            </a>
+                        </div>
+                    {% empty %}
+                        <div>
+                            <h3 class="text-capitalize text-center ">no article...</h3>
+                        </div>
+                    {% endfor %}
+                </div>
+                </div>
+        {% else %}
+                <div class=" d-flex" style="height: 350px;">
+                    <div class="alert alert-warning h-10 d-flex justify-content-between align-items-center" style="height: 20%; width: 100%;">
+                        <a class="btn btn-sm btn-dark text-light" href="{% url 'home' %}"><b>back</b></a>
+                        <h6 class="text-center" style="width: 90%; padding: 10px;">You do not have permission to view this profile.</h6>
+                </div>
+                </div>
+            </div>
+        {% endif %}
+    <script type="text/javascript">
+        function view_only() {
+        alert("Profile cannot be edited while on view as a visitor");
+    }
+
+    </script>
+
+
+    {% endblock %}
+

@@ -1,0 +1,117 @@
+{% extends 'blog/master.html' %}
+{% load static %}
+
+    {% block title %}
+     profile
+
+    {% endblock %}
+
+    {% block content %}
+    <link rel="stylesheet" href="{% static 'blog/css/profile.css' %}"/>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card" style="width: 300px; font-weight: bold; font-size: 14px;">
+                    <div class="card-body sm-2">
+                        <img src="{{ request.user.profile_picture.url }}" alt="User Icon" class="images">
+                    </div>
+                    <div class="card-footer">
+                        <ul class="profile_foot">
+                            <p class="text-gray-800 text-capitalize text-muted " style="padding: 2px;" >
+                                Full Name: {{ user.first_name }} {{ user.last_name }}
+                            </p>
+                            <p class="text-gray-800 text-capitalize text-muted " style="padding: 2px;">
+                                Username: {{ user.username }}
+                            </p>
+                            <p class="text-gray-800 text-capitalize text-muted " style="padding: 2px;">
+                                Email: {{ user.email }}
+                            </p>
+                            <p class="text-gray-800 text-capitalize text-muted " style="padding: 2px;">
+                                Occupation: {{ user.job}}
+                            </p>
+                            <p class="text-gray-800 text-capitalize text-muted" style="padding: 2px;">
+                                Address: {{ user.location}}
+                            </p>
+                            <p class="text-gray-800 text-capitalize text-muted " style="padding: 2px;">
+                                Bio: {{ user.bio}}
+                            </p>
+                            <p class="text-gray-800 text-capitalize text-muted" style="padding: 2px;">
+                                Role: {{ user.role}}
+                            </p>
+                        </ul>
+                        <a class="btn btn-md btn-primary form-control" href="{% url 'settings' %}"><b>Edit profile</b></a>
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h6 class="btn btn-lg w-100 btn-primary mt-5" style="padding:10px;">
+                        <a class="text-light font-weight-bold" href="{% url 'gallery' %}">
+                            <b>Galley</b>
+                        </a>
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <h6 class="btn btn-sm w-100 btn-dark mt-5" style="padding:10px;">
+                        <a class="text-light font-weight-bold" href="{% url 'view_profile' user.pk%}">
+                            <i class="far fa-eye" ></i><b> View as visitor</b>
+                        </a>
+                    </h6>
+
+                </div>
+           </div>
+           <div class="col-sm-8">
+            {% for post in posts %}
+                <div class="card shadow bg-light">
+                    <a href="{% url 'article' post.slug %}">
+                        <div class="card-header">
+                                <img class="pic" src="{{ post.author.profile_picture.url }}">
+                            <div class="post_author">
+                            </div>
+                                <p class="text-gray-800 h5 font-weight-bold text-capitalize text-muted">{{ post.author.first_name }} {{ post.author.last_name }}</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-gray-800 h6 text-capitalize text-muted">Title: {{ post.title }}</div>
+                            <img class="body_pic" src="{{ post.featured_image.url }}">
+                            <form method="post" action="{% url 'like_post' post.id %}" class="like flex justify-content-between " style="margin:2px; padding:2px;" >
+                                {% csrf_token %}
+                                {% if user in post.likes.all %}
+                                    <button type="submit" name="post_id" value="{{post.id}}" class=" col btn btn-sm bg-danger text-light ">
+                                        <i class="fas fa-thumbs-down"></i><b> Dislike</b>
+                                    </button>
+                                    <small class="col text-muted text-gray-800"style="padding:2px;">
+                                        <strong>{{ post.likes.count }}-Likes</strong>
+                                    </small>
+                                {% else %}
+                                    <button type="submit" name="post_id" value="{{post.id}}" class=" col btn btn-sm bg-primary text-light">
+                                        <i class="fas fa-thumbs-up"></i><b>like</b>
+                                    </button>
+                                    <small class="col text-muted text-gray-800"style="padding:2px;">
+                                        <strong>{{ post.likes.count }}-Likes</strong>
+                                    </small>
+                                {% endif %}
+                            </form>
+                            <small class="text-dark align-content-center" style="padding: 3px;">{{ post.excerpt }}</small>
+                        </div>
+                        <div class="row card-footer">
+                            <small class="col text-muted text-gray-800"style="padding:2px;">
+                                Category : {{ post.category }}
+                            </small>
+                            <small class="col text-muted text-gray-800" style="padding:2px;">
+                                <strong>Status:{{ post.status }}</strong>
+                            </small>
+                            <small class="col text-muted text-gray-800" style="padding:2px;">
+                                Published_on: {{ post.dop }}
+                            </small>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+           </div>
+        </div>
+
+    </div>
+
+
+    {% endblock %}
+

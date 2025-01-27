@@ -1,0 +1,141 @@
+{% extends 'blog/master.html' %}
+{% load static %}
+{% block title %}
+  Home - blog
+ {% endblock %}
+<link rel="stylesheet" href="{% static 'blog/css/sidebar.css'%}"/>
+{% block content %}
+<style>
+  .breaking-news-marquee{
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    animation: marquee 15s linear infinite;
+  }
+  .breaking-news-marquee h4 {
+        display: inline-block;
+        margin-right: 50px;
+        font-size: 1.2rem;
+    }
+  .col-2 {
+    position: relative;
+    display: inline-block;
+    border-right: 1px solid lightgray;
+  }
+  .col-content{
+    position: absolute;
+    display: none;
+    width:100%;
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.30), 0 14px 11px rgba(0, 0, 0, 0.22);
+  }
+  .col-2 > span{
+    color: #173559;
+    padding: 10px;
+    font-weight: bold;
+  }
+  .col-2:hover > .col-content{
+    display: block;
+  }
+  .col-content > a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #173559;
+    background: white;
+    border-bottom: 1px solid gray;
+  }
+  .col-content:hover > a {
+    color: white;
+    background: #903c56;
+  }
+
+    @keyframes marquee{
+      from{
+        transform: translateX(100%);
+      }
+      to{
+        transform: translate(-100%);
+      }
+    }
+    .tab_head{
+      color: #173559;
+      font-family: 'Times New Roman', Times, serif;
+      font-weight: bolder;
+      padding: 3px;
+    }
+    table .tab_text td a{
+      color: #173559;
+      font-weight: bolder;
+      padding: 3px;
+      font-size: small;
+    }
+</style>
+  <div class="container">
+  <div class="breaking-news-marquee">
+    <h4 style="color: red;"> Breaking_news!!! </h4>
+    {% for news in breaking_news %}
+         <h4>{{ news.title }}</h4>
+    {% endfor %}
+  </div>
+  <div class='row' style=" height: 100px; margin-bottom: 10px; border-bottom: 3px solid transparent;">
+    <h2 class="tab_head text-center">Articles</h2>
+    <div class="col-2 bg-light text-center ">
+      <a href="{% url 'home' %}"  style="color: #173559; font-weight:bold;">General</a>
+    </div>
+    <div class="col-2 bg-light text-center">
+      <span>News</span>
+      <div class="col-content">
+        <a href="{% url 'sport' %}">Sport</a>
+        <a href="{% url 'health' %}">Health Care</a>
+        <a href="{% url 'news' %}">Politics</a>
+        <a href="{% url 'news' %}">Foreign Affairs</a>
+      </div>
+    </div>
+    <div class="col-2 bg-light text-center">
+      <span>Business</span>
+      <div class="col-content">
+        <a href="{% url 'business' %}">Stock Exchange</a>
+        <a href="{% url 'business' %}">Forex</a>
+        <a href="{% url 'business' %}">Oil & Gas</a>
+      </div>
+    </div>
+    <div class="col-2 bg-light text-center">
+      <span>Education</span>
+      <div class="col-content">
+        <a href="{% url 'science' %}">Science</a>
+        <a href="{% url 'education' %}">Art</a>
+        <a href="{% url 'education' %}">History</a>
+      </div>
+    </div>
+    <div class="col-2 bg-light text-center">
+      <span>Technology</span>
+      <div class="col-content">
+        <a href="{% url 'programming' %}">Software Development</a>
+        <a href="{% url 'tech' %}">IT Support</a>
+        <a href="{% url 'tech' %}">ICT</a>
+      </div>
+    </div>
+    <div class="col-2 bg-light text-center">
+      <span>Entertainment</span>
+      <div class="col-content">
+        <a href="{% url 'ent' %}">Music</a>
+        <a href="{% url 'ent' %}">movies</a>
+      </div>
+    </div>
+  </div>
+  <table class="table text-center table-hover">
+    <tbody class="tab_text">
+      {% for post in published_post %}
+        <tr>
+          <td><a href="{% url 'article' post.slug %}">{{ post.title }}</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+ <!-- Main Content -->
+
+{% endblock%}

@@ -1,0 +1,99 @@
+{% extends 'blog/master.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'blog/css/single_post.css' %}"/>
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-sm-4">
+        <h2 class="text_style text-dark">About Me</h2>
+        <h5 class="text_style text-muted ">Author : {{ mypost.author.first_name }} {{ mypost.author.last_name }}</h5>
+        <h5 class="text_style text-muted ">Occupation: {{ mypost.author.job }}</h5>
+        <div class="fakeimg">
+          <img class="images" src="{{ mypost.author.profile_picture.url }}" alt="User-icon">
+        </div>
+        <p class="post_article text-muted">{{ mypost.author.bio }}</p>
+        <p class="mt-4 text-capitalize text-center shadow" style="padding: 5px; border: 2px solid transparent ;"><a href="{% url 'view_profile' mypost.author.pk %}">
+          <i class="far fa-eye "></i> view author profile</a>
+        </p>
+        <p class="post_article"></p>
+        {% if request.user.is_authenticated %}
+        <ul class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <a class="nav-link bg-primary text-light text-center mb-2" href="{% url 'postform' %}">
+              <b>Create Post</b>
+            </a>
+          </li>
+          {% if request.user == mypost.author %}
+          <li class="nav-item">
+            <a class="btn btn-md w-100 btn-secondary mb-2 " href="{% url 'updatepost' mypost.pk %}">
+              <b>Update Post</b>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-md w-100 btn-dark " href="{% url 'delete_post' mypost.pk %}">
+              <b>Delete</b>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+        {% endif %}
+        <hr class="d-sm-none">
+      </div>
+      <div class="col-sm-8">
+        <div class="article_page">
+          <h2 class="text_style text-capitalize text-dark">{{ mypost.title }}</h2>
+          <h5 class="p-2 text-muted">Published<i class="far fa-calendar"></i> {{ mypost.dop }}</h5>
+          <div class="fakeimg" >
+            <img class="images" src="{{ mypost.featured_image.url }}" alt="User-icon" >
+          </div>
+          <form method="POST" action="{% url 'like_post' mypost.id %}" class="like">
+            {% csrf_token %}
+            {% if liked %}
+              <button type="submit" name="post_id" value="{{ mypost.id }}" class="btn btn-danger btn-sm"><i class="fas fa-thumbs-down"></i> <b> Dislike</b></button>
+              <h6 class="like_count text-muted">{{ total_likes }}-Likes</h6>
+            {% else %}
+              <button type="submit" name="post_id" value="{{ mypost.id }}" class="btn btn-primary btn-sm"><i class="fas fa-thumbs-up"></i><b> like</b></button>
+              <h6 class="like_count text-muted ">{{ total_likes }}-likes</h6>
+            {% endif %}
+          </form>
+          <p class="post_article">{{mypost.article|linebreaks}}</p>
+        </div>
+        <hr >
+        <!-- comment Section-->
+        <div class="comment bg-light">
+          <h2 class="text_style text-muted "> Comments... </h2>
+            <ul>
+              {% if not mypost.comments.all %}
+                <span class="text_style">No comments....</span><a href="{% url 'create_comment' mypost.pk %}"> Add Comment</a></span>
+              {% else %}
+                {% for comment in mypost.comments.all %}
+                    <div class="card">
+                      <img src="{{ comment.user.profile_picture.url }}" alt="User-icon" class="p-2">
+                      <div class="card-body">
+                        <p><strong class="text-gray-800 text-muted ">{{ comment.user.username }}</strong>: {{ comment.comment_body }}</p>
+                        <small>
+                          {% if comment.user == request.user %}
+                            <a class="btn btn-sm btn-info text-light" href="{% url 'update_comment' comment.pk %}">Edit</a>
+                          {% endif %}
+                          {% if comment.user == request.user or request.user == mypost.author  %}
+                            <a class="btn btn-sm btn-dark" href="{% url 'delete_comment' comment.id %}">Delete</a>
+                          {% endif %}
+                        </small>
+                      </div>
+
+                    </div>
+                {% endfor %}
+              {% endif %}
+
+            </ul>
+            <span></span><a href="{% url 'create_comment' mypost.pk %}" class="btn btn-primary " style="color: blanchedalmond;"><b>Add Comment</b></a></span>
+        </div>
+        <!-- End Comment Section -->
+
+      </div>
+    </div>
+  </div>
+  
+
+{% endblock %}

@@ -1,0 +1,110 @@
+.col-sm-8{
+    height: 900px;
+    overflow-y: auto;
+    color: black;
+    align-content: center;
+}
+.col-sm-6{
+    height:750px;
+    overflow-y:auto;
+}
+
+.profile_foot{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.card{
+    padding: 10px;
+    width: 80%;
+    margin: 10px;
+    box-shadow: 1rem 1rem 1rem -1rem #a0a0a033;
+    border: none;
+}
+.card .card-header{
+    width:100%;
+    background: transparent;
+    display: flex;
+    justify-content: flex-start;
+    padding: 5px;
+    flex-wrap: nowrap;
+    height: 100px;
+}
+
+.card .card-header p{
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    margin:5px;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.card .card-header .post_title{
+    padding: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #173559;
+    margin:10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card .card-body .post_title{
+    padding: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #173559;
+}
+
+.card .card-body .post_note{
+    padding: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #173559;
+}
+
+.card .card-footer{
+    background: transparent;
+}
+.card .card-footer .post_title{
+    padding: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #173559;
+}
+
+.images {
+    height: auto;
+    width: 100%;
+    max-height: 250px;
+    max-width: 300px;
+    object-position: center;
+    padding: auto;
+}
+
+.card .card-header .pic{
+    width:100%;
+    max-width: 110px;
+    height: 100%;
+    max-height: 80px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    object-position: center;
+    margin: 10px;
+    padding: 2px;
+}
+.body_pic{
+    width:100%;
+    height: auto;
+    max-height: 300px;
+    border-radius: 3%;
+    object-position: center;
+}
+.pic-title{
+    width:100%;
+    height: auto;
+    max-height: 250px;
+    border-radius: 3%;
+    object-position: cover;
+
+}

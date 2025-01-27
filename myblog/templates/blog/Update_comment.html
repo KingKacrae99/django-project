@@ -1,0 +1,49 @@
+{% extends 'blog/master.html' %}
+{% load static %}
+
+
+
+
+{% block content %}
+
+<style>
+    .comments{
+        width: 600px;
+        align-items: content;
+        justify-content: space-between;
+        display: flex;
+        margin: 0px 10px;
+    }
+    textarea{
+        width: 450px;
+        height: 100px;
+        padding: 10px;
+        margin: 0px 10px;
+    }
+    label strong{
+        color: rgb(35, 143, 143);
+        font-family:'Times New Roman', Times, serif;
+        font-size: larger;
+        align-self: center;
+    }
+    .butt{
+        border-radius:5px;
+        background: rgb(35, 77, 74);
+        color: white;
+        padding: 5px;
+        font-weight: bold;
+    }
+</style>
+<div class="card" style="height: 200px; justify-content: center; margin: 0px 10px; width: 700px;">
+    <form method="POST" action="{% url 'update_comment' pk=comment.id %}">
+    {% csrf_token %}
+    <div class="comments" >
+        <label for="comment"><strong> comment</strong></label>
+        <textarea class="form-control" name="comment" id="comment" placeholder="Add a comment" required >{{ comment.comment_body }}</textarea>
+        <span><button class="butt" type="submit" >Add Comment</a></span>
+    </div>
+    </form>
+</div>
+</div>
+
+{% endblock %}

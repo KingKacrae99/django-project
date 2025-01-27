@@ -1,0 +1,167 @@
+{% extends 'blog/master.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .pic-title{
+    width:100%;
+    height: auto;
+    padding: 5px;
+    max-height: 250px;
+    object-position: cover;
+  }
+  .col-sm-6{
+    height:750px;
+    overflow-y:auto;
+  }
+</style>
+
+<div class="container">
+    <div class="row">
+        <!-- author -->
+        <div class="col-xl-3 md-6 mb-4">
+          <div class="card border-left-primary text-muted shadow h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-content-center">
+                <div class="col mr-2 text-center">
+                  <div class="text-xm font-weight-bold text-uppercase mb-1">Author</div>
+                  <div class="h4 mb-0 font-weight-bold text-gray-800">{{ request.user.username }}</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-user fa-2x"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!--- Post --->
+        <div class="col-xl-3 md-6 mb-4">
+          <div class="card border-left-primary shadow text-muted h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-content-center">
+                <div class="col mr-2 text-center">
+                  <div class="text-xm font-weight-bold text-gray-900 text-uppercase mb-1">
+                    Post
+                  </div>
+                  <div class="h4 mb-0 font-weight-bold shadow text-gray-800">{{ total_post }}</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas  fa-newspaper fa-2x"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!--Published-Post-->
+        <div class="col-xl-3 md-6 mb-4">
+          <div class="card bg- border-left-primary text-muted shadow h-100 py-2" style="color:#173559;">
+            <div class="card-body">
+              <div class="row no-gutters align-content-center">
+                <div class="col mr-2 text-center">
+                  <div class="text-xm font-weight-bold text-gray-900 text-uppercase mb-1">
+                    Published-Post
+                  </div>
+                  <div class="h4 mb-0 font-weight-bold text-gray-800">{{ filtered }}</div>
+                </div>
+                <div class="col-auto">
+                  <i class="far  fa-paper-plane fa-2x"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!--UnPublished-Post-->
+     <div class="col-xl-3 md-6 mb-4">
+            <div class="card bg- border-left-primary text-muted shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-content-center">
+                        <div class="col mr-2 text-center">
+                            <div class="text-xm font-weight-bold text-gray-900 text-uppercase mb-1">
+                               Unpublished-Post
+                            </div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">
+                                {{ total_draft }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="far  fa-eye-slash "></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </div>
+      <!-- end Unpublished Post-->
+      </div>
+      <br>
+      <h2 class="text-center w-100 bg-dark text-light" style="height: 50px; padding: 3px;">Post</h2>
+      <br>
+    <div class="row">
+        {% if mypost %}
+            <div class="col-sm-6" style="border-right: 1px solid lightgray;">
+                <h3 class="text-center">Image-Post</h2>
+                <div class="row">
+                    {% for post in mypost %}
+                        {% if post.featured_image %}
+                            <div class="col-md-5 col-sm-10 mb-4 bg-light" style="border-radius: 10px;margin-right: 20px;">
+                                <div class="card-body ">
+                                    <img class="pic-title" src="{{ post.featured_image.url }}">
+                                    <form method="post" action="{% url 'like_post' post.id %}" class="like flex justify-content-between " style="margin:2px; padding:2px;" >
+                                        {% csrf_token %}
+                                        {% if user in post.likes.all %}
+                                            <button type="submit" name="post_id" value="{{post.id}}" class=" col btn badge bg-danger text-light ">
+                                                <i class="fas fa-thumbs-down"></i>Dislike
+                                            </button>
+                                            <small class="col text-muted text-gray-800"style="padding:2px;">
+                                                <strong>{{ post.likes.count }}-Likes</strong>
+                                            </small>
+                                        {% else %}
+                                            <button type="submit" name="post_id" value="{{post.id}}" class=" col btn badge bg-primary text-light">
+                                                <i class="fas fa-thumbs-up"></i>like
+                                            </button>
+                                            <small class="col text-muted text-gray-800"style="padding:2px;">
+                                                <strong>{{ post.likes.count }}-Likes</strong>
+                                            </small>
+                                        {% endif %}
+                                    </form>
+                                </div>
+                                <div class="card-footer" style="padding:3px; border-top:1px solid gray">
+                                  <div  style="padding: 5px;">
+                                    <a class="text-gray-800 h6 text-capitalize text-primary" href="{% url 'article' post.slug %}">
+                                      Title: {{ post.title }}
+                                    </a>
+                                  </div>
+                                  <small class="text-primary text-gray-800"><strong>Status: {{ post.status }}</strong></small>|
+                                  <small class="text-primary text-gray-800"><b>Published on</b>: {{ post.dop }}</small>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+               </div>
+            </div>
+
+            <div class="col-sm-6">
+                <h3 style="text-align: center;">Video-Post</h3>
+                {% for post in mypost %}
+                    {% if post.featured_video %}
+                            <div class="card-body">
+                                <!-- Add your video player here -->
+                                <video controls>
+                                    <source src="{{ post.featured_video.url }}" type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="card-footer">
+                                <!-- Comments or other info -->
+                            </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center ">You've not made any post...</p>
+            <a href="" class="text-center"> Add Post</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

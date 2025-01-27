@@ -1,0 +1,273 @@
+{% extends 'blog/master.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .profile-pic{
+         max-width:200px;
+         max-height:200px;
+         margin:auto;
+         border-radius:58%;
+         border: 2px solid transparent;
+    }
+</style>
+
+{% if messages %}
+    {% for msg in messages %}
+       {% if msg.success %}
+           <div class="alert alert-success text-center">{{ msg }}</div>
+       {% elif msg.info %}
+           <div class="alert alert-info text-center">{{ msg }}</div>
+       {% else %}
+           <div class="alert alert-danger text-center">{{ msg }}</div>
+       {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if request.user.is_admin %}
+    <div class="row bg-dark w-100 align-items-center" style="padding: 5px;">
+        <div class="col-sm-2 ">
+            <a class="btn btn-sm btn-secondary w-5" href="{% url 'dashboard' %}"><b class="text-light font-weight-bold "> &#8592; Back</b></a>
+        </div>
+        <div class="col w-100">
+            <h1 class=" text-center text-light bg-dark w-90"><i class="fas fa-cog ">User Settings</i></h1>
+        </div>
+    </div>
+{% else %}
+    <div class="row bg-dark w-100 align-items-center" style="padding: 5px;">
+        <div class="col-sm-2 ">
+            <a class="btn btn-sm btn-secondary w-5" href="{% url 'user' %}"><b class="text-light font-weight-bold "> &#8592; Back</b></a>
+        </div>
+        <div class="col w-100">
+            <h1 class=" text-center text-light bg-dark w-90"><i class="far fa-cog"></i>User Settings</h1>
+        </div>
+    </div>
+{% endif %}
+
+<br>
+<div class="row">
+    <!-- 1st column -->
+    <div class="col-md-4">
+        <h2 class="text-center text-muted">Profile Settings <i class="fas fa-user"></i></h2>
+        <div class="card-body mb-4 d-flex align-items-center justify-content-center">
+            <img class="profile-pic" src="{{ request.user.profile_picture.url }}" alt="user-icon">
+        </div>
+        <div class="section">
+            <div class="text-muted">
+                <h1 class="h4 text-gray-900 mb-4 text-center">Update Profile</h1>
+                <form method="POST" action="{% url 'settings' %}" class="user-m-md-1 m-lg-1" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group w-100 mb-2">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" class="form-control form-control-user"
+                            id="exampleInputusername" aria-describedby="emailHelp"
+                            value="{{user.username}}" required>
+                    </div>
+                    <div class="form-group w-100 mb-2">
+                        <label for="first_name">First Name</label>
+                        <input type="text" name="first_name" class="form-control form-control-user"
+                            id="exampleInputusername" aria-describedby="emailHelp"
+                            value="{{user.first_name}}" required>
+                    </div>
+                    <div class="form-group w-100 mb-2">
+                        <label for="last_name">Last name</label>
+                        <input type="text" name="last_name" class="form-control form-control-user"
+                            id="exampleInputusername" aria-describedby="emailHelp"
+                            value="{{user.last_name}}" required>
+                    </div>
+                    <div class="form-group w-100 mb-2">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" class="form-control form-control-user"
+                            id="exampleInputemail" aria-describedby="emailHelp"
+                            value="{{user.email}}" required>
+                    </div>
+                    <div class="form-group w-100 mb-2">
+                        <label for="bio">Bio</label>
+                        <textarea name="bio"  class="form-control form-control-user w-100" required>{{user.bio}}</textarea>
+                    </div>
+                    <div class="form-group w-100 mb-2">
+                        <label for="Location">Address</label>
+                        <textarea name="location"  class="form-control form-control-user w-100" required>{{user.location}}</textarea>
+                    </div>
+                    <div class="form-group w-100 mb-2">
+                        <label for="job">Occupation</label>
+                        <input type="text" name="job" class="form-control form-control-user"
+                            id="exampleInputjob" value="{{user.job}}">
+                    </div>
+                    <div class="form-group w-100 mb-2">
+                        <label for="role">Role</label>
+                        <select name="role" class="form-control form-control-user"
+                            id="exampleInputusername" aria-describedby="emailHelp" required>
+                            {% for value, display in choices %}
+                                    <option value="{{ value }}" {% if user.role == value %}selected{% endif %}>
+                                    {{ display }}
+                                </option>
+                            {% endfor %}
+                        </select required>
+                    </div>
+                    {%if user.profile_picture %}
+                        <div class="form-group w-100 mb-2">
+                            <label for="profile_picture">Profile Picture</label>
+                            <input type="file" name="profile_picture" class="form-control form-control-user"
+                                id="exampleInputusername">
+                        </div>
+                    {% else %}
+                        <div class="form-group w-100 mb-2">
+                            <label for="profile_picture">Profile Picture</label>
+                            <input type="file" name="profile_picture" class="form-control form-control-user"
+                                id="exampleInputusername" required>
+                        </div>
+                    {% endif %}
+                    <div class="form-group w-100 mb-2">
+                        <input type="password" name="password" class="form-control form-control-user"
+                            id="exampleInputPassword" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                    <hr>
+                    <input class="btn btn-dark btn-user btn-block" type="submit" value="Update">
+                </form>
+           </div>
+    </div>
+    <!-- End 1st column-->
+
+    <!--2nd Column-->
+    <div class="col-md-4">
+        <!--Privacy Section-->
+        <section class="h-45">
+            <h2 class="mb-4 text-muted">Privacy Settings <i class="fas fa-user-secret"></i></h2>
+            <form method="post" action="{% url 'privacy' request.user.pk %}" class="form-control-user">
+                {% csrf_token %}
+                <div class="card-body align-items-center justify-content-center">
+                    <div class="mb-4 align-items-center justify-content-center" style="padding: 10px;">
+                        <label for="show_email" class="font-weight-bold h6">
+                            <input type="checkbox" name="show_emails" {% if setting.show_email %}checked{% endif %}>
+                            Show email to others
+                        </label>
+                    </div>
+                    <div class="mb-4 align-items-center justify-content-center" style="padding: 10px;">
+                        <label for="allow_view" class="font-weight-bold h6">
+                            <input type="checkbox" name="allow_views" {% if setting.allow_view %}checked{% endif %}>
+                            Allow only users and author to view my profile
+                        </label>
+                    </div>
+                </div>
+                <input type="submit" value="Save changes" class="btn btn-sm btn-warning text-light mb-4">
+            </form>
+        </section>
+
+
+        <!--Notification section-->
+        <section class="h-50 ">
+            <h2 class="text-muted">Change Password<i class="fa fa-key"></i></h2>
+            <form method="POST" action="{% url 'change_password' %}" class="form-control-user" >
+                {% csrf_token %}
+                <div class="card-body align-items-center justify-content-center">
+                    <div class="mb-4 align-items-center justify-content-center">
+                        <label for="old_password">Old Password</label>
+                        <input type="password" name="old_password" class="form-control" placeholder="Enter old password...">
+                    </div>
+                    <div class="mb-4 align-items-center justify-content-center">
+                        <label for="old_password">New Password</label>
+                        <input type="password" name="new_password" class="form-control" placeholder="Enter New Password...">
+                    </div>
+                    <div class="mb-4 align-items-center justify-content-center">
+                        <label for="new_password2">Confirm Password</label>
+                        <input type="password" name="new_password2" class="form-control" placeholder="Confirm New Password...">
+                    </div>
+                    <div class="mb-4 justify-content-center">
+                            <input type="submit" value="Save Changes" class="btn btn-sm btn-dark text-light">
+                    </div>
+                    <span class="text-capitalize text-danger font-weight-bold text-gray-800 " style="padding:5px;">{{ msg }}</span>
+                </div>
+            </form>
+        </section>
+
+    </div>
+    <!--End 2rd Column-->
+
+    <!--3rd column-->
+    <div class="col-md-4">
+        <!--Notification section-->
+        <section class="h-30">
+            <h2 class="mb-4 text-muted " style="padding: 5px;">Notification Settings<i class="fas fa-bell"></i></h2>
+            <form method="POST" action="{% url 'notify_settings' %}" class="form-control-user" >
+                {% csrf_token %}
+                <div class="card-body align-items-center justify-content-center">
+                    <div class="mb-5 h6 font-weight-bold align-items-center justify-content-center" style="padding: 1.7px;">
+                        <label for="email_notifications">
+                            <input type="checkbox" name="email_notifications" {% if user.settings.email_notification %} checked {% endif %}>
+                            Email Notification
+                        </label>
+                    </div>
+                    <div class="mb-5 h6 font-weight-bold align-items-center justify-content-center" style="padding: 1.7px;">
+                            <input type="submit" value="Save Changes" class="btn btn-sm btn-dark">
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <!--Post section-->
+        <section>
+            <form method="post" action="{% url 'post_setting' %}">
+                {% csrf_token %}
+                <h2 class="text-muted mb-3" style="padding: 5px;">Post Settings <i class="fas fa-newspaper"></i></h2>
+                <div class="card-body align-items-center justify-content-center">
+                    <div class="mb-3 h6 font-weight-bold align-items-center justify-content-center" style="padding: 2.5px;">
+                        <select name="user_post" class="form-control form-control-user text-center text-muted" >
+                            <option value="" disabled selected>Select Post </option>
+                            {% for mypost in my_posts %}
+                            <option value="{{ mypost.id }}">{{ mypost.title }} ({{ mypost.status }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3 h6 font-weight-bold align-items-center justify-content-center" style="padding: 2.5px;">
+                        <label for="unpublished">
+                        <input type="checkbox" name="unpublished">
+                        Take Down Post
+                        </label>
+                    </div>
+                    <div class="mb-5 h6 font-weight-bold align-items-center justify-content-center" style="padding: 2.5px;">
+                        <input type="submit" value="Save Changes" class="btn btn-sm btn-warning text-light">
+                    </div>
+                </div>
+            </form>
+            <hr>
+        <!-- End Post Settings -->
+        </section>
+
+        <!-- Account activation-->
+        <section>
+            <h4 class="text-muted"> Account Activate /Deactivation Mode</h4>
+            <form method="POST" action="{% url 'activate_setting' %}">
+                {% csrf_token %}
+                <div class="align-items-center justify-content-center mt-4" style="padding: 5px;">
+                    <label for="mode" class="h5 text-capitalize text-muted">
+                        <input type="checkbox" name="mode" value="on" {% if user.is_active %} checked {% endif %}>
+                        {% if user.is_active %} Deactivate account {% else %} Activate account {% endif %}
+                    </label>
+                </div>
+                <div class="align-items-center justify-content-center mt-4" style="padding: 5px;">
+                    <label for="password" class="h5 text-capitalize text-muted">
+                        Password
+                        <input type="password" name="password" class="form-control" placeholder="Enter Password">
+                    </label>
+                </div>
+                {% if user.is_active %}
+                    <div class="mb-5 h6 font-weight-bold align-items-center justify-content-center" style="padding: 2.5px;">
+                        <input type="submit" value="Deactivate Account" class="btn btn-sm btn-danger text-light">
+                    </div>
+                {% else %}
+                    <div class="mb-5 h6 font-weight-bold align-items-center justify-content-center" style="padding: 2.5px;">
+                        <input type="submit" value="Activate Account" class="btn btn-sm btn-primary text-light">
+                    </div>
+                {% endif %}
+            </form>
+        </section>
+    </div>
+    <!--End 3rd Column-->
+</div>
+<!--Row End -->
+
+
+
+{% endblock %}

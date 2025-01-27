@@ -1,0 +1,76 @@
+.col-sm-4{
+    padding: 5px;
+}
+.col-sm-8 {
+    padding: 5px;
+    height: 600px;
+    overflow-y: auto;
+}
+.col-sm-4 .fakeimg{
+    height: 200px;
+    padding: 5px;
+}
+.col-sm-8 .fakeimg{
+    height: 500px;
+    width: 100%;
+    padding: 5px;
+}
+.text_style{
+    color:#173559;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.post_article {
+    padding: 5px;
+}
+.col-sm-4 .fakeimg .images{
+    width: 80%;
+    height: 100%;
+    max-height: 500px;
+    max-height: 200px;
+    border-radius: 5%;
+    object-position: center;
+    box-shadow: 1rem 1rem 1rem -1rem #a0a0a033;
+}
+.col-sm-8 .fakeimg .images{
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    border-radius: 3%;
+    object-position: center;
+    box-shadow: 1rem 1rem 1rem -1rem #a0a0a033;
+}
+.like{
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    width: 140px;
+    margin: 5px;
+  }
+
+  /* comment section */
+.comment .card{
+    display: flex;
+    width: 80%;
+    height: 120px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: normal;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding: auto;
+
+}
+.card img{
+    width: 100px;
+    height: 80%;
+    max-height: 100px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+
+}
+.comment{
+    padding: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+
+}

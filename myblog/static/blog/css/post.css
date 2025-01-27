@@ -1,0 +1,16 @@
+*{
+    box-sizing: border-box;
+}
+
+/*span a {
+    top: 20px;
+    align-content: left;
+    right:30px;
+    border: 1px solid transparent;
+    padding: 5px;
+    background: #006669;
+}*/
+a {
+    text-decoration: none;
+}
+

@@ -1,0 +1,57 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    background-color: #f8f9fa;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150vh;
+    padding: 10px; /* Adds padding on smaller screens */
+}
+
+.content {
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    body {
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+
+    .content {
+        width: 90%; /* Adjusts the width to fit mobile screens */
+        padding: 1.5rem;
+    }
+}
+
+/* Further tweaks for extra-small screens */
+@media (max-width: 830px) {
+    .content {
+        padding: 1rem; /* Reduces padding for smaller screens */
+    }
+}
+
+.content .text-center form .form-group {
+    padding: 5px 20px;
+    
+}
+
+

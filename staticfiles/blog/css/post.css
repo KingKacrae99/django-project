@@ -1,0 +1,172 @@
+*{
+    box-sizing: border-box;
+}
+
+.page-wrapper a:hover{
+    color:#006669;
+}
+/* POST SLIDER */
+.post-slider {
+    position: relative;
+    overflow: hidden;
+    max-width: 100%;
+    margin: 0 auto;
+}
+.post-slider .slider-title{
+    text-align: center;
+    margin: 30px auto;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.post-slider .next{
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    font-size: 2em;
+    color:#006669;
+    cursor: pointer;
+}
+
+.post-slider .prev{
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    font-size: 2em;
+    color:#006669;
+    cursor: pointer;
+}
+
+.post-slider .post-wrapper{
+    display: flex;
+    width:100%;
+    height: auto;
+    margin:0px auto;
+    justify-content: center;
+    overflow: hidden;
+    padding: 10px 0px 10px 0px;
+    flex-wrap: nowrap;
+
+}
+
+.post-slider .post-wrapper .post{
+    background: white;
+    width: 400px;
+    height: 330px;
+    margin: 0px 10px;
+    display: inline-block;
+    border-radius: 5px;
+    box-shadow: 1rem 1rem 1rem -1rem #a0a0a033;
+}
+
+.post-slider .post-wrapper .post .slider-image img{
+    width: 100%;
+    max-width: 400px;
+    height: 200px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: 1px solid gray;
+}
+
+.post-slider .post-wrapper .post .post-info{
+    max-width:400px;
+    height:130px;
+    width: 100%;
+    margin: 5px;
+    padding: 0px 5px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+span a {
+    top: 20px;
+    align-content: left;
+    right:30px;
+    border: 1px solid transparent;
+    padding: 5px;
+    background: #006669;
+}
+a {
+    text-decoration: none;
+}
+
+.clearfix::after {
+    content: '';
+    display: block;
+    clear:both;
+}
+.bltn{
+   padding: 10px;
+   background: #006660;
+   color:white;
+   border: 1px solid transparent;
+   border-radius: .25rem;
+}
+.bltn:hover{
+    color: white;
+    background: #005255;
+}
+
+@media (max-width: 768px) {
+    .post-slider .next, .post-slider .prev {
+        font-size: 1.5em; /* Adjust size for smaller screens */
+        right: 15px;
+        left: 15px;
+    }
+
+    /* Adjust .post width to fit smaller screens */
+    .post-slider .post-wrapper .post {
+        width: 90%;
+    }
+}
+.coat{
+    width: 90%;
+    margin: 30px auto 30px;
+}
+
+.coat .main-content {
+    width:70%;
+    float: left;
+}
+.coat .main-content .post{
+    width:95%;
+    height: 270px;
+    margin: 20px auto;
+    border-radius: 5px;
+    background: white;
+    position: relative;
+}
+.coat .main-content .post .read-more {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border: 1px solid #006669;
+    background: transparent;
+    border-radius: 0px;
+    color:#006669
+}
+.coat .main-content .post .read-more:hover {
+    background:#006669;
+    color: white;
+    transition: .25s;
+}
+.coat .main-content .post img{
+    width: 40%;
+    height:100%;
+    float: left;
+
+}
+.coat .main-content .post .post-preview{
+    width: 60%;
+    padding: 10px;
+    float: right;
+}
+.coat .main-content .recent-post-title{
+    margin: 20px;
+}
+
+.coat .slidebar {
+    width: 30%;
+    float: left;
+    border: 1px dashed green;
+    height: 300px;
+}
+.coat .Clear{
+    clear: both;
+}

@@ -1,0 +1,29 @@
+{% extends 'blog/master.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    {% csrf_token %}
+    <div class="card-body">
+        <div class="col-sm-8">
+            <h2>{{ post.title }}</h2>
+            <h5>{{post.excerpt}}, {{post.dop}}</h5>
+            <div class="fakeimg" style="height: 450px; width: 100%;">
+                <img src="{{ post.featured_image.url }}" alt="User-icon" style="height: 100%; width: 100%;">
+            </div>
+            <p>{{ post.article|linebreaks }}</p>
+        </div>
+    </div>
+    <div class="card-footer">
+        <form method="POST" action="{% url 'create_comment' post.pk %}">
+        {% csrf_token %}
+        <div class="comments"></div>
+            <label for="comment"><strong>comment</strong></label>
+            <textarea class="form-control" name="comment" id="comment" placeholder="Add a comment" >{% if comment %}{{ comment.comment_body }}{% endif %}</textarea>
+            <span><button class="btn btn-sm btn-primary" type="submit">Add Comment</a></span>
+        </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

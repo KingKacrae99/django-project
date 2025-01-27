@@ -1,0 +1,84 @@
+/* sidebar.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  background-color: #f8f9fa;
+  position: fixed;
+  top: 56px; /* Height of the navbar */
+  left: 0;
+  height: 100%;
+  width: 60px;
+  transition: width 0.3s;
+  overflow-x: hidden;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure sidebar is above other elements */
+}
+
+.sidebar:hover {
+  width: 150px;
+}
+
+.sidebar .nav-link {
+  padding: 15px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  color: #000;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #e9ecef;
+}
+
+.sidebar .nav-link i {
+  font-size: 1.2rem;
+}
+
+.sidebar .nav-link span {
+  margin-left: 10px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: none;
+}
+
+.sidebar:hover .nav-link span {
+  opacity: 1;
+  display: inline;
+}
+
+.content {
+  margin-left: 60px; /* Same as the collapsed sidebar width */
+  padding: 20px;
+  transition: margin-left 0.3s;
+}
+
+.sidebar:hover ~ .content {
+  margin-left: 200px; /* Same as the expanded sidebar width */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+  .sidebar {
+      width: 0;
+      transition: width 0.3s;
+  }
+
+  .sidebar:hover {
+      width: 200px;
+  }
+
+  .content {
+      margin-left: 0;
+      transition: margin-left 0.3s;
+  }
+
+  .sidebar:hover ~ .content {
+      margin-left: 200px;
+  }
+}

@@ -1,0 +1,171 @@
+{% load static %}
+
+    <div class="row">
+    <!-- Donut Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="chart-pie pt-4">
+                    <canvas id="myPieChart" width="400px" height="200"></canvas>
+                </div>
+            </div>
+            <!-- End card-Body -->
+        </div>
+    <!--End Donut-->
+
+    <!--Bar Chart-->
+         <div class="col-xl-8 col-lg-7">
+                <div class="card-header py-3 shadow md">
+                    <h6 class="m-0 font-weight-bold text-primary text-center"> Active & Inactive Users Statics </h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar">
+                        <canvas id="myBarChart"></canvas>
+                    </div>
+
+                </div>
+         </div>
+    <!--End chart-->
+
+
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById("myPieChart");
+    if(ctx) {
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ["Users", "Active-users","Inactive-users"],
+                datasets:[{
+                    data: [
+                        {{ total_user }},
+                        {{ active }},
+                        {{ inactive }}
+                    ],
+                    backgroundColor:['#4e73df', '#1cc88a', '#f6c23e'],
+                    hoverBackgroundColor:['#2e59d9', '#17a673', '##f6c23d'],
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                    },
+                    legend: {
+                    display: false
+                    },
+                    cutoutPercentage: 80,
+            },
+        });
+   } else {
+    console.log({
+    total_user: {{ total_user }},
+    active_users: {{ active }},
+    inactive_users: {{ inactive }}
+   });
+
+   }
+   var ctx = document.getElementById("myBarChart");
+var myBarChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: {{ months|safe }},
+    datasets: [
+      {
+        label: "Registrations",
+        backgroundColor: "#4e73df",
+        data: {{ registrations|safe }},
+      },
+      {
+        label: "Active Users",
+        backgroundColor: "#1cc88a",
+        data: {{ active_users|safe }},
+      },
+      {
+        label: "Inactive Users",
+        backgroundColor: "#f6c23e",
+        data: {{ inactive_users|safe }},
+      }
+    ],
+  },
+  options: {
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        left: 10,
+        right: 25,
+        top: 25,
+        bottom: 0
+      }
+    },
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false,
+          drawBorder: false
+        },
+        ticks: {
+          maxTicksLimit: 4
+        },
+        maxBarThickness: 20,
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          stepSize: 10,
+          maxTicksLimit: 10,
+          padding: 10,
+        },
+        gridLines: {
+          color: "rgb(234, 236, 244)",
+          zeroLineColor: "rgb(234, 236, 244)",
+          drawBorder: false,
+          borderDash: [2],
+          zeroLineBorderDash: [1]
+        }
+      }],
+    },
+    legend: {
+      display: false
+    },
+    tooltips: {
+      titleMarginBottom: 10,
+      titleFontColor: '#6e707e',
+      titleFontSize: 14,
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      caretPadding: 10,
+      callbacks: {
+        label: function(tooltipItem, chart) {
+          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+          return datasetLabel + ': ' + tooltipItem.yLabel;
+        }
+      }
+    },
+    plugins: {
+      title: {
+        display: true,
+        text: 'Monthly Data Summary', // Title of the chart
+        fontSize: 16,
+        padding: 10
+      }
+    }
+  }
+});
+</script>

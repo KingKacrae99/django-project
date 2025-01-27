@@ -1,0 +1,194 @@
+{% extends 'blog/master.html' %}
+{% load static %}
+
+
+{% block title%}Dashboard | {% endblock %}
+
+{% block content %}
+<style>
+  .col-xl-6 .card .card-body{
+    max-height: 250px;
+    overflow-y:auto;
+  }
+</style>
+  <div class="container">
+    <div class="row">
+      <!-- author -->
+      <div class="col-xl-3 md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2"style="color:#173559;">
+          <div class="card-body">
+            <div class="row no-gutters align-content-center">
+              <div class="col mr-2 text-center">
+                <div class="text-xm font-weight-bold text-uppercase mb-1">Author</div>
+                <div class="h4 mb-0 font-weight-bold text-gray-800">{{ author }}</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-user fa-2x"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--- Post --->
+      <div class="col-xl-3 md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2" style="color:#173559;">
+          <div class="card-body">
+            <div class="row no-gutters align-content-center">
+              <div class="col mr-2 text-center">
+                <div class="text-xm font-weight-bold text-gray-900 text-uppercase mb-1">
+                  Post
+                </div>
+                <div class="h4 mb-0 font-weight-bold text-gray-800">{{ total_post }}</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas  fa-newspaper fa-2x"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Published-Post-->
+      <div class="col-xl-3 md-6 mb-4">
+        <div class="card bg- border-left-primary shadow h-100 py-2" style="color:#173559;">
+          <div class="card-body">
+            <div class="row no-gutters align-content-center">
+              <div class="col mr-2 text-center">
+                <div class="text-xm font-weight-bold text-gray-900 text-uppercase mb-1">
+                  Published-Post
+                </div>
+                <div class="h4 mb-0 font-weight-bold text-gray-800">{{ published }}</div>
+              </div>
+              <div class="col-auto">
+                <i class="far  fa-paper-plane fa-2x"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--UnPublished-Post-->
+      <div class="col-xl-3 md-6 mb-4">
+      <div class="card bg- border-left-primary shadow h-100 py-2" style="color:#173559;">
+        <div class="card-body">
+          <div class="row no-gutters align-content-center">
+            <div class="col mr-2 text-center">
+              <div class="text-xm font-weight-bold text-gray-900 text-uppercase mb-1">
+                Unpublished-Post
+              </div>
+              <div class="h4 mb-0 font-weight-bold text-gray-800">{{ unpublished }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="far  fa-eye-slash fa-2x"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end Unpublished Post-->
+    </div>
+    <!--end status row-->
+    <hr>
+
+    {% include 'blog/charts.html' %}
+    <br>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 mb-4">
+        <div class="card shadow">
+          <div class="card-header py-3 font-weight-bold bg-primary text-center text-light">
+            <i class="fas fa-eye-slash fa-1x"></i>
+            <b>UnPublished-Post</b>
+          </div>
+          <div class="card-body">
+            <table class="table table-sm">
+              <thead>
+                <tr class="font-weight-bold">
+                  <th></th>
+                  <th class="text-primary">Title</th>
+                  <th class="text-primary">Author</th>
+                  <th class="text-primary">Date</th>
+                  <th class="text-primary">Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% if not_post.exists %}
+                    {% for post in not_post %}
+                    <form method="POST" action="{% url 'publish_post' post.slug %}">
+                      {% csrf_token %}
+                      <tr id="post-{{ post.slug }}">
+                        <td><a class="btn btn-sm btn-primary" href="{% url 'article' post.slug %}">view</a></td>
+                        <td class="text-primary">{{ post.title }}</td>
+                        <td class="text-primary">{{ post.author }}</td>
+                        <td class="text-primary">{{ post.dop }}</td>
+                        <td class="text-primary" id="post-{{ post.slug }} ">{{ post.status }}</td>
+                        <td>
+                        {% if post.slug %}
+                          <button class="btn btn-sm btn-success" type="submit">Publish</button>
+                        {% else %}
+                          <span class="text-primary">No slug available.</span>
+                        {% endif %}
+                        </td>
+                      </tr>
+                    </form>
+                    {% endfor %}
+                  {% else %}
+                    <tr class="text-center">
+                      <td colspan="6" class="text-primary">No draft available to publish.</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-6 col-lg-6 mb-4">
+        <div class="card shadow">
+          <div class="card-header py-3 text-center text-gray-800 text-light text-uppercase bg-primary">
+            <i class="fas fa-eye"></i>
+            <b>Published Post</b>
+          </div>
+          <div class="card-body">
+            <table class="table table-sm">
+              <thead>
+                <th class="text-primary">Title</th>
+                {% if news.updated_at.exists %}
+                    <th class="text-primary ">Updated_at</th>
+                {% else %}
+                    <th class="text-primary">Time</th>
+                {% endif %}
+                <th class="text-primary text-capitalize">Status</th>
+                <th class="text-primary text-capitalize"></th>
+                <th class="text-primary text-capitalize"></th>
+              </thead>
+              <tbody>
+                {% if news.exists %}
+                    {% for post in news %}
+                        <a href="{% url 'article' post.id %}"><tr>
+                          <td class="text-primary text-capitalize"><a class="text-primary" href="{% url 'article' post.slug %}">{{ post.title }}</a></td>
+                          {% if post.updated_at %}
+                            <td class="text-primary text-capitalize">{{ post.updated_at }} </td>
+                          {% else %}
+                            <td class="text-primary text-capitalize">{{ post.dop }}</td>
+                          {% endif %}
+                          <td class="text-primary">{{ post.status }}</td>
+                          <td><a class="btn btn-sm btn-primary" href="{% url 'updatepost' post.id %}">Edit</a></td>
+                          <td><a class="btn btn-sm btn-danger" href="{% url 'delete_post' post.id %}">Remove</a></td>
+                        </tr></a>
+                    {% endfor %}
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <!-- End Publish row -->
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </div>
+  
+{% endblock %}

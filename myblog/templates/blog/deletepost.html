@@ -1,0 +1,28 @@
+{% extends 'blog/master.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .card{
+
+        height: 350px;
+        align-self: center;
+        justify-self: center;
+    }
+</style>
+
+<div class="card shadow align-items-center justify-content-center w-100">
+    <h5 class="text-muted font-weight-bold ">Are you sure you want to delete this <b>post</b>?</h5>
+    <p class="text-center text-muted text-capitalize">{{ mypost.title }}</p>
+    <form method="post" action="{% url 'delete_post' mypost.id %}">
+        {% csrf_token %}
+        {% if request.user.is_admin %}
+            <a class="btn btn-sm btn-warning text-light" href="{% url 'dashboard' %}">Cancel</a>
+        {% else %}
+            <a class="btn btn-sm btn-warning text-light" href="{% url 'user' %}">Cancel</a>
+        {% endif %}
+            <input class="btn btn-sm btn-danger font-weight-bold" type="submit" value="Delete">
+    </form>
+</div>
+
+{% endblock %}

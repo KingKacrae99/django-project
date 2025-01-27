@@ -1,0 +1,89 @@
+<div class="post-wrapper">
+    {% for post in posts|slice:":6" %}
+    <div class="post">
+        <div class="slider-image">
+            {% if post.featured_image and post.featured_image.url %}
+                <img src="{{ post.featured_image.url }}" alt="User-icon">
+            {% else %}
+                <img src="{% static 'blog/images/beans plant.jpg' %}" alt="User-icon">
+            {% endif %}
+        </div>
+        <div class="post-info">
+            <h4><a href="{% url 'article' post.slug %}">{{ post.title }}</a></h4>
+            <i class="far fa-user"> {{ post.author }}</i>&nbsp;
+            <i class="far fa-calendar"> {{ post.dop }}</i>&nbsp;
+            <i class="far fa-calendar"> {{ post.updated_at }}</i>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="coat clearfix">
+
+    <!--Main Content-->
+    <div class="main-content">
+        <h1 class="recent-post-title">Recent Posts</h1>
+
+        <div class="post">
+            <img src="{% static 'blog/images/beanseed.jpg' %}">
+            <div class="post-preview">
+                <h3><a href="page.html">The strongest and Sweetest songs yet remain to be sung</a></h3>
+                <i class="far fa-user">Adams blake</i>
+                &nbsp;
+                <i class="far calendar">Oct 21, 2024</i>
+                <p class="preview-text">
+                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda sapiente 
+                   dicta rerum deleniti deserunt laboriosam.
+                </p>
+                <a href="single.html" class="bltn read-more">Read More</a>
+            </div>
+        </div>
+    </div>
+    <!--// Main Content -->
+
+    <div class="slidebar"></div>
+ 
+
+</div>
+<!-- // Content -->
+
+</div>
+<!--// Page Wrapper -->
+<script src="{% static 'blog/js/owl.carousel.min.js' %}"></script>
+
+
+{% endblock %}
+
+{% block scripts %}
+
+$('.owl-carousel').owlCarousel({
+    loop:true,
+    margin:10,
+    nav:true,
+    responsive:{
+        0:{
+            items:1
+        },
+        600:{
+            items:3
+        },
+        1000:{
+            items:5
+        }
+    }
+})
+
+{% endblock  %}
+<div class="owl-carousel owl-theme">
+    <div class="item"><h4>1</h4></div>
+    <div class="item"><h4>2</h4></div>
+    <div class="item"><h4>3</h4></div>
+    <div class="item"><h4>4</h4></div>
+    <div class="item"><h4>5</h4></div>
+    <div class="item"><h4>6</h4></div>
+    <div class="item"><h4>7</h4></div>
+    <div class="item"><h4>8</h4></div>
+    <div class="item"><h4>9</h4></div>
+    <div class="item"><h4>10</h4></div>
+    <div class="item"><h4>11</h4></div>
+    <div class="item"><h4>12</h4></div>
+</div>

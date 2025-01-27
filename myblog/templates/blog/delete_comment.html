@@ -1,0 +1,38 @@
+{% extends 'blog/master.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .sure{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-size: larger;
+        color: gray;
+    }
+    .row{
+        width: 200px;
+        align-items: center;
+    }
+    .col{
+        width: 40%;
+        max-width: 100px;
+        height: 300px;
+    }
+</style>
+
+    <p class="sure"><strong>Are you sure want to delete this comment?</strong></p>
+    <p class="text-muted">"{{ comment.comment_body }}"</p>
+    <form method="POST" action="{% url 'delete_comment' comment.pk %}">
+        {% csrf_token %}
+        <div class="row" style="width: 200px;">
+            <div class="col">
+                <a class="btn btn-secondary" href="{% url 'article' slug %}">Cancel</a>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-danger">confirm</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+{% endblock %}
